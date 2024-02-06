@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <vector>
 
 
 // 수풀 속에서 랜덤 확률로 포켓몬나옴
@@ -31,20 +32,25 @@ public:
         return _username;
     }
 
-
+    void _set_mon_list(int i,string mon_type) {
+        this->_monster[i] = mon_type;
+    }
+    string _get_mon_list(int i) {
+        return _monster[i];
+    }
 
 protected:
     string _username;
     static int _item;
     static int _money;
-    static int _monster[6];
+    static string _monster[6];
 
 };
 
 // staitc 초기화
 int player::_item = 0;
 int player::_money = 0;
-int player::_monster[6];
+string player::_monster[6];
 
 
 class item : public player {
@@ -63,14 +69,58 @@ class money : public player {
 
 
 
+class monster :public player {
+public:
+    void get() {
+        cout << _mon_type << " 속성 몬스터를 획득했습니다." << endl << endl;
+    };
+    
+    virtual void set_mon_type() {
+        _mon_type = "미지정";
+    };
+
+protected :
+    string _mon_type;
+};
+
+class mon_water : public monster {
+    void set_mon_type() {
+        _mon_type = "물";
+    };
+};
+
+class mon_fire : public monster {
+    void set_mon_type() {
+        _mon_type = "불";
+    };
+};
+
+class mon_leaf : public monster {
+    void set_mon_type() {
+        _mon_type = "풀";
+    };
+};
 
 
+
+
+
+
+
+
+
+
+
+
+// 자식 클래스 진입용
 
 void get_what(player* what) {
     what->get();
 }
 
-
+void what_mon_type(monster* what) {
+    what->set_mon_type();
+}
 
 
 
@@ -114,8 +164,58 @@ int main()
 
     P1._set_username(my_name);
     
+    cout << "플레이어 이름은 " << P1._get_username() << "입니다." << endl;
 
-    cout << P1._get_username();
+
+
+
+
+
+    //기본 몬스터 선택
+    string m_type_input;
+
+
+    cout << "기본 몬스터 속성을 선택해주세요. (물 / 불 / 풀). : ";
+    cin >> m_type_input;
+    cout << endl;
+
+    while (true) {
+        if (m_type_input== "물" || m_type_input == "불" || m_type_input == "풀") {
+            break;
+        }
+        cout << "(물 / 불 / 풀)으로 입력해주세요. : ";
+        cin >> m_type_input;
+        cout << endl;
+    }
+
+    // 몬스터 속성 입력 (자식 클래스 불러오기 확인 작업)
+    if (m_type_input == "물") {
+        monster* m1 = new mon_water();
+        what_mon_type(m1);
+        get_what(m1);
+        P1._set_mon_list(1,"물");
+        delete m1;            
+    }
+    else if (m_type_input == "불") {
+        monster* m1 = new mon_fire();
+        what_mon_type(m1);
+        get_what(m1);
+        P1._set_mon_list(1, "불");
+        delete m1;
+    }
+    else if (m_type_input == "풀") {
+        monster* m1 = new mon_leaf();
+        what_mon_type(m1);
+        get_what(m1);
+        P1._set_mon_list(1, "풀");
+        delete m1;
+    }
+    
+
+    cout << "처음으로 선택하신 몬스터 속성은 " << P1._get_mon_list(1) << "입니다." << endl;
+
+
+
 
 }
 
