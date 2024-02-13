@@ -1,0 +1,42 @@
+class monster {
+public:
+    void get() {
+        //cout << _mon_type << " 속성 몬스터를 획득했습니다." << endl << endl;
+    };
+
+    virtual void set_mon_type() { };
+
+    string get_mon_type() const {
+        return _mon_type;
+    }
+
+protected:
+    string _mon_type;
+    int _hp;
+    int _lv;
+    int _def;
+    string m_name;
+
+
+};
+
+class mon_water : public monster {
+    void set_mon_type() {
+        _mon_type = "물";
+        _hp = 100;
+        _lv = 0;
+        _def = 10;
+    };
+};
+
+class mon_fire : public monster {
+    void set_mon_type() {
+        _mon_type = 2;
+    };
+};
+
+class mon_leaf : public monster {
+    void set_mon_type() {
+        _mon_type = 3;
+    };
+};
